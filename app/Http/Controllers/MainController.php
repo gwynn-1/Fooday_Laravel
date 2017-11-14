@@ -17,18 +17,6 @@ class MainController extends Controller
         return view("checkout");
     }
 
-    public function menu(){
-        return view("menu");
-    }
-
-    public function search(){
-        return view("search");
-    }
-
-    public function foodType(){
-        return view("food-type");
-    }
-
     public function contact(){
         return view("contact");
     }

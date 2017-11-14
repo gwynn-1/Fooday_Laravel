@@ -15,13 +15,18 @@ class IndexController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function loadViewAction(Request $res){
-        $foodsToday = DB::table("foods")
-                        ->join("pageurl","foods.id_url","=","pageurl.id")
-                        ->where("foods.today",1)->get();
-        $paging = DB::table("foods")->join("pageurl","foods.id_url","=","pageurl.id")->paginate(6);
-        if($res->ajax())
+
+        if($res->ajax()){
+            $paging = DB::table("foods")->join("pageurl","foods.id_url","=","pageurl.id")->paginate(6);
             return view("Pagination.ajax-paging-index",["foodpaging"=>$paging]);
-        return view("index",["foodstoday"=>$foodsToday,"foodpaging"=> $paging]);
+        }
+        else{
+            $foodsToday = DB::table("foods")
+                ->join("pageurl","foods.id_url","=","pageurl.id")
+                ->where("foods.today",1)->get();
+            $paging = DB::table("foods")->join("pageurl","foods.id_url","=","pageurl.id")->paginate(6);
+            return view("index",["foodstoday"=>$foodsToday,"foodpaging"=> $paging]);
+        }
     }
 
 

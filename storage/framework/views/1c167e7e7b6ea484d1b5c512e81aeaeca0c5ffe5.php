@@ -1,8 +1,7 @@
-@extends('layout.layout')
-@section('content')
-    @php
+<?php $__env->startSection('content'); ?>
+    <?php
         $arr_icon = ["swin-icon-pasta","swin-icon-fish","swin-icon-meat","swin-icon-ice-cream"];
-    @endphp
+    ?>
     <div class="page-container">
         <div data-bottom-top="background-position: 50% 50px;" data-center="background-position: 50% 0px;" data-top-bottom="background-position: 50% -50px;" class="page-title page-menu">
             <div class="container">
@@ -23,22 +22,22 @@
                         <div class="row">
                             <div class="col-md-2"></div>
                             <div data-slide-toshow="5" class="cat-wrapper-02 main-slider col-md-8">
-                                @foreach($foodtype as $item)
-                                    @php
+                                <?php $__currentLoopData = $foodtype; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php
                                         $icon = rand(0,3);
-                                    @endphp
-                                <div class="item ftitem" id-food-type="{{$item->id}}">
-                                    <div class="cat-icons"><i class="icons {{$arr_icon[$icon]}}"></i>
-                                        <h5 class="cat-title">{{$item->name}}</h5>
+                                    ?>
+                                <div class="item ftitem" id-food-type="<?php echo e($item->id); ?>">
+                                    <div class="cat-icons"><i class="icons <?php echo e($arr_icon[$icon]); ?>"></i>
+                                        <h5 class="cat-title"><?php echo e($item->name); ?></h5>
                                     </div>
                                 </div>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                             <div class="col-md-2"></div>
                         </div>
                         <div class="products nav-slider">
                             <div class="row slick-padding fooditem">
-                                @include("Ajax.ajax_foodtype")
+                                <?php echo $__env->make("Ajax.ajax_foodtype", array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                             </div>
                         </div>
                     </div>
@@ -62,4 +61,5 @@
             });
         });
     </script>
-    @endsection
+    <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -96,12 +96,12 @@
                         <div class="close-offcanvas-wrapper"><span class="close-offcanvas">x</span></div>
                         <div class="main-nav">
                             <ul id="main-nav" class="nav nav-pills">
-                                <li><a class="current-menu-item" href="../">Home</a></li>
-                                <li><a href="ds-thuc-don.html">Thực đơn</a></li>
-                                <li><a href="mon-an-theo-mua.html">Món ăn theo mùa</a></li>
-                                <li><a href="tim-kiem.html">Tìm kiếm</a></li>
-                                <li><a href="about.html">Giới thiệu</a></li>
-                                <li><a href="contact.html">Liên hệ</a></li>
+                                <li><a class="current-menu-item" href="/">Home</a></li>
+                                <li><a href="/menu">Thực đơn</a></li>
+                                <li><a href="/food-type">Món ăn theo loại</a></li>
+                                <li><a href="/search">Tìm kiếm</a></li>
+                                <li><a href="/about">Giới thiệu</a></li>
+                                <li><a href="/contact">Liên hệ</a></li>
                             </ul>
                         </div>
                     </nav>

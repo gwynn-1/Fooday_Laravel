@@ -1,5 +1,4 @@
-@extends('layout.layout')
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="page-container">
         <div data-bottom-top="background-position: 50% 50px;" data-center="background-position: 50% 0px;" data-top-bottom="background-position: 50% -50px;" class="page-title page-menu">
             <div class="container">
@@ -12,7 +11,7 @@
         </div>
         <div class="page-content-wrapper">
             <section class="product-sesction-menu padding-bottom-100 padding-top-100">
-                @include("Ajax.ajax_detailmenu")
+                <?php echo $__env->make("Ajax.ajax_detailmenu", array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
             </section>
             <section class="menu-grid-02 padding-bottom-100">
                 <div class="container">
@@ -22,16 +21,16 @@
                                 <div class="products nav-slider">
                                     <div class="item-slick">
                                         <div class="row">
-                                            @foreach($menu as $mn)
+                                            <?php $__currentLoopData = $menu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mn): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <div class="col-md-2 col-sm-4 col-xs-12">
                                                 <div class="item product-01">
-                                                    <div class="block-img"><img src="images/thuc_don/{{$mn->image}}" alt="">
-                                                        <div class="group-btn"><a href="{{$mn->id}}" class="swin-btn btn-link"><i class="icons fa fa-link"></i></a><a href="#" class="swin-btn btn-add-to-card"><i class="fa fa-shopping-basket"></i></a></div>
+                                                    <div class="block-img"><img src="images/thuc_don/<?php echo e($mn->image); ?>" alt="">
+                                                        <div class="group-btn"><a href="<?php echo e($mn->id); ?>" class="swin-btn btn-link"><i class="icons fa fa-link"></i></a><a href="#" class="swin-btn btn-add-to-card"><i class="fa fa-shopping-basket"></i></a></div>
                                                     </div>
-                                                    <a href="{{$mn->id}}" class="ajax-menu" ><h5 class="title">{{$mn->name}}</h5><span class="price woocommerce-Price-amount amount">{{$mn->price}}<span class="price-symbol">vnd</span></span></a>
+                                                    <a href="<?php echo e($mn->id); ?>" class="ajax-menu" ><h5 class="title"><?php echo e($mn->name); ?></h5><span class="price woocommerce-Price-amount amount"><?php echo e($mn->price); ?><span class="price-symbol">vnd</span></span></a>
                                                 </div>
                                             </div>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                         </div>
                                     </div>
@@ -41,7 +40,7 @@
                     </div>
                 </div>
             </section>
-            <section class="menu-banner-section banner-section padding-top-100 padding-bottom-100"><img src="{{URL::asset("images/background/lemon.png")}}" alt="" class="img-left img-bg img-deco img-responsive"><img src="{{URL::asset("images/background/vegetable_03.png")}}" alt="" class="img-right img-bg img-deco img-responsive">
+            <section class="menu-banner-section banner-section padding-top-100 padding-bottom-100"><img src="<?php echo e(URL::asset("images/background/lemon.png")); ?>" alt="" class="img-left img-bg img-deco img-responsive"><img src="<?php echo e(URL::asset("images/background/vegetable_03.png")); ?>" alt="" class="img-right img-bg img-deco img-responsive">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-8 col-md-offset-2">
@@ -80,4 +79,5 @@
             </script>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

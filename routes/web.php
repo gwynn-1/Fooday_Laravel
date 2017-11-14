@@ -17,13 +17,17 @@ Route::get('/detail/{id}/{url}', "DetailController@loadViewAction");
 
 Route::get('/checkout', "MainController@checkout");
 
-Route::get('/menu', "MainController@menu");
+Route::get('/menu', "MenuController@loadViewAction");
 
-Route::get('/search', "MainController@search");
+Route::get('/search', "SearchController@loadViewAction");
 
-Route::get('/food-type', "MainController@foodType");
+Route::get('/food-type', "FoodtypeController@loadViewAction");
 
 Route::get('/contact', "MainController@contact");
+
+Route::get("/about",function (){
+   return view("about");
+});
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
     // your CRUD resources and other admin routes here
