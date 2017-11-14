@@ -11,149 +11,18 @@
             </div>
         </div>
         <div class="page-content-wrapper">
-            <section class="product-sesction-02 padding-top-100 padding-bottom-100">
+            <section class="product-sesction-02 padding-top-100 padding-bottom-100 parent" style="height: auto">
                 <div class="container">
                     <div class="swin-sc swin-sc-title style-3">
-                        <p class="title"><span>Tìm kiêm món ăn</span></p>
+                        <p class="title"><span>Tìm kiếm món ăn</span></p>
                     </div>
-                    <div class="swin-sc swin-sc-product products-02 carousel-02">
+                    <div class="swin-sc swin-sc-product products-02 carousel-02 parent" style="height: auto">
                         <div class="row ">
-                            <label class="col-md-6 col-md-offset-3">Nhập tên món/mô tả/đơn giá:<input type="text" value="" class="form-control"></label>
+                            <label class="col-md-6 col-md-offset-3">Nhập tên món/đơn giá:<input type="text" value="" class="form-control txtSearch"></label>
                         </div>
-                        <div class="products nav-slider margin-top-50">
-                            <div class="row slick-padding">
-                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                    <div class="blog-item item swin-transition">
-                                        <div class="block-img"><img src="{{URL::asset("images/product/product-2a.jpg")}}" alt="" class="img img-responsive">
-                                            <div class="block-circle price-wrapper"><span class="price woocommerce-Price-amount amount"><span class="price-symbol">$</span>25.0</span></div>
-                                            <div class="group-btn"><a href="javascript:void(0)" class="swin-btn btn-link"><i class="icons fa fa-link"></i></a><a href="javascript:void(0)" class="swin-btn btn-add-to-card"><i class="fa fa-shopping-basket"></i></a></div>
-                                        </div>
-                                        <div class="block-content">
-                                            <h5 class="title"><a href="javascript:void(0)">Mexico Beafsteak Potato fly</a></h5>
-                                            <div class="product-info">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ullam laboris nisi ut aliquip ex ea commodo consequat.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                    <div class="blog-item item swin-transition">
-                                        <div class="block-img"><img src="{{URL::asset("images/product/product-2b.jpg")}}" alt="" class="img img-responsive">
-                                            <div class="block-circle price-wrapper"><span class="price woocommerce-Price-amount amount"><span class="price-symbol">$</span>5.0</span></div>
-                                            <div class="group-btn"><a href="javascript:void(0)" class="swin-btn btn-link"><i class="icons fa fa-link"></i></a><a href="javascript:void(0)" class="swin-btn btn-add-to-card"><i class="fa fa-shopping-basket"></i></a></div>
-                                        </div>
-                                        <div class="block-content">
-                                            <h5 class="title"><a href="javascript:void(0)">Mexico Beafsteak Potato</a></h5>
-                                            <div class="product-info">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ullam laboris nisi ut aliquip ex ea commodo consequat.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                    <div class="blog-item item swin-transition">
-                                        <div class="block-img"><img src="{{URL::asset("images/product/product-2c.jpg")}}" alt="" class="img img-responsive">
-                                            <div class="block-circle price-wrapper"><span class="price woocommerce-Price-amount amount"><span class="price-symbol">$</span>20.0</span></div>
-                                            <div class="group-btn"><a href="javascript:void(0)" class="swin-btn btn-link"><i class="icons fa fa-link"></i></a><a href="javascript:void(0)" class="swin-btn btn-add-to-card"><i class="fa fa-shopping-basket"></i></a></div>
-                                        </div>
-                                        <div class="block-content">
-                                            <h5 class="title"><a href="javascript:void(0)">Madagasca Lopster Tasty</a></h5>
-                                            <div class="product-info">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ullam laboris nisi ut aliquip ex ea commodo consequat.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                    <div class="blog-item item swin-transition">
-                                        <div class="block-img"><img src="{{URL::asset("images/product/product-2e.jpg")}}" alt="" class="img img-responsive">
-                                            <div class="block-circle price-wrapper"><span class="price woocommerce-Price-amount amount"><span class="price-symbol">$</span>45.0</span></div>
-                                            <div class="group-btn"><a href="javascript:void(0)" class="swin-btn btn-link"><i class="icons fa fa-link"></i></a><a href="javascript:void(0)" class="swin-btn btn-add-to-card"><i class="fa fa-shopping-basket"></i></a></div>
-                                        </div>
-                                        <div class="block-content">
-                                            <h5 class="title"><a href="javascript:void(0)">Jambon Salad Hot Bread</a></h5>
-                                            <div class="product-info">
-                                                <ul class="list-inline">
-                                                    <li class="author"><span>Chef</span><span class="text">Don Joe</span></li>
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ullam laboris nisi ut aliquip ex ea commodo consequat.
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                    <div class="blog-item item swin-transition">
-                                        <div class="block-img"><img src="{{URL::asset("images/product/product-2f.jpg")}}" alt="" class="img img-responsive">
-                                            <div class="block-circle price-wrapper"><span class="price woocommerce-Price-amount amount"><span class="price-symbol">$</span>15.0</span></div>
-                                            <div class="group-btn"><a href="javascript:void(0)" class="swin-btn btn-link"><i class="icons fa fa-link"></i></a><a href="javascript:void(0)" class="swin-btn btn-add-to-card"><i class="fa fa-shopping-basket"></i></a></div>
-                                        </div>
-                                        <div class="block-content">
-                                            <h5 class="title"><a href="javascript:void(0)">Mexico Beafsteak Potato</a></h5>
-                                            <div class="product-info">
-                                                <ul class="list-inline">
-                                                    <li class="author"><span>Chef</span><span class="text">Don Joe</span></li>
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ullam laboris nisi ut aliquip ex ea commodo consequat.
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                    <div class="blog-item item swin-transition">
-                                        <div class="block-img"><img src="{{URL::asset("images/product/product-2d.jpg")}}" alt="" class="img img-responsive">
-                                            <div class="block-circle price-wrapper"><span class="price woocommerce-Price-amount amount"><span class="price-symbol">$</span>30.0</span></div>
-                                            <div class="group-btn"><a href="javascript:void(0)" class="swin-btn btn-link"><i class="icons fa fa-link"></i></a><a href="javascript:void(0)" class="swin-btn btn-add-to-card"><i class="fa fa-shopping-basket"></i></a></div>
-                                        </div>
-                                        <div class="block-content">
-                                            <h5 class="title"><a href="javascript:void(0)">Madagasca Lopster Tasty</a></h5>
-                                            <div class="product-info">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ullam laboris nisi ut aliquip ex ea commodo consequat.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                    <div class="blog-item item swin-transition">
-                                        <div class="block-img"><img src="{{URL::asset("images/product/product-2k.jpg")}}" alt="" class="img img-responsive">
-                                            <div class="block-circle price-wrapper"><span class="price woocommerce-Price-amount amount"><span class="price-symbol">$</span>45.0</span></div>
-                                            <div class="group-btn"><a href="javascript:void(0)" class="swin-btn btn-link"><i class="icons fa fa-link"></i></a><a href="javascript:void(0)" class="swin-btn btn-add-to-card"><i class="fa fa-shopping-basket"></i></a></div>
-                                        </div>
-                                        <div class="block-content">
-                                            <h5 class="title"><a href="javascript:void(0)">Jambon Salad Hot Bread</a></h5>
-                                            <div class="product-info">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ullam laboris nisi ut aliquip ex ea commodo consequat.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                    <div class="blog-item item swin-transition">
-                                        <div class="block-img"><img src="{{URL::asset("images/product/product-2l.jpg")}}" alt="" class="img img-responsive">
-                                            <div class="block-circle price-wrapper"><span class="price woocommerce-Price-amount amount"><span class="price-symbol">$</span>15.0</span></div>
-                                            <div class="group-btn"><a href="javascript:void(0)" class="swin-btn btn-link"><i class="icons fa fa-link"></i></a><a href="javascript:void(0)" class="swin-btn btn-add-to-card"><i class="fa fa-shopping-basket"></i></a></div>
-                                        </div>
-                                        <div class="block-content">
-                                            <h5 class="title"><a href="javascript:void(0)">Mexico Beafsteak Potato</a></h5>
-                                            <div class="product-info">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ullam laboris nisi ut aliquip ex ea commodo consequat.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                    <div class="blog-item item swin-transition">
-                                        <div class="block-img"><img src="{{URL::asset("images/product/product-2n.jpg")}}" alt="" class="img img-responsive">
-                                            <div class="block-circle price-wrapper"><span class="price woocommerce-Price-amount amount"><span class="price-symbol">$</span>30.0</span></div>
-                                            <div class="group-btn"><a href="javascript:void(0)" class="swin-btn btn-link"><i class="icons fa fa-link"></i></a><a href="javascript:void(0)" class="swin-btn btn-add-to-card"><i class="fa fa-shopping-basket"></i></a></div>
-                                        </div>
-                                        <div class="block-content">
-                                            <h5 class="title"><a href="javascript:void(0)">Madagasca Lopster Tasty</a></h5>
-                                            <div class="product-info">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ullam laboris nisi ut aliquip ex ea commodo consequat.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="products nav-slider margin-top-50 parent" style="height: 0px">
+                            <div class="row slick-padding res-food" style="height: 0px">
+                                @include("Ajax.ajax_search");
                             </div>
                         </div>
                     </div>
@@ -161,4 +30,29 @@
             </section>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            $(document).keypress(function(e) {
+                $(".res-food").css("height","auto");
+                $(".slick-list").css("height","auto");
+                $(".parent").css("height","auto");
+                if(e.which == 13) {
+                    $.ajax({
+                        method:"GET",
+                        url:"/search",
+                        data:{
+                            search: $(".txtSearch").val()
+                        },
+                        success:function (data) {
+                            $(".res-food").fadeOut(500,function () {
+                                $(".res-food").html(data);
+                                $(".res-food").fadeIn(500);
+                            });
+
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 @endsection
