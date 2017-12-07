@@ -24,6 +24,20 @@
                 <div class="box-header {{ $crud->hasAccess('create')?'with-border':'' }}">
 
                     @include('crud::inc.button_stack', ['stack' => 'top'])
+                    <a href="{{url(config('backpack.base.route_prefix'), 'export-excel')}}/{{ $crud->entity_name_plural }}" class="btn btn-default ladda-button excel-btn" data-style="zoom-in">
+                        <span class="ladda-label">
+                            Export Excel
+                        </span>
+                    </a>
+
+                    {!! Form::open(array('url'=>url(config('backpack.base.route_prefix'), 'import-excel')."/".$crud->entity_name_plural, 'files' => true,'name'=>'form','onchange'=>'document.form.submit();' ,'class'=>'btn btn-default ladda-button excel-btn')) !!}
+
+                        {!! Form::label("excelFile","Import Excel") !!}
+                        {!! Form::file('file', array("name"=>"excelFile"))!!}
+                            @if(session()->has('error'))
+                                <div style="color: red;font-weight: bold;font-size: 12px">{{session('error')}}</div>
+                            @endif
+                    {!! Form::close() !!}
 
                     <div id="datatable_button_stack" class="pull-right text-right"></div>
                 </div>
@@ -335,7 +349,35 @@
 
         });
     </script>
-
+    {{--<script>--}}
+        {{--$(document).ready(function () {--}}
+           {{--$(".excel-btn").click(function (e) {--}}
+               {{--e.preventDefault();--}}
+              {{--switch($(".content-header h1 span").html()){--}}
+                  {{--case "customers":--}}
+                      {{--$.ajax({--}}
+                          {{--url:"/admin/customer",--}}
+                          {{--method:"GET"--}}
+                      {{--}).done(function (data) {--}}
+{{--//                          $(".excel-btn span").html(data);--}}
+                      {{--});--}}
+                      {{--break;--}}
+                  {{--case "foods":--}}
+                      {{--$.ajax({--}}
+                          {{--url:"/admin/foods",--}}
+                          {{--method:"GET"--}}
+                      {{--});--}}
+                      {{--break;--}}
+                  {{--case "food_types":--}}
+                      {{--$.ajax({--}}
+                          {{--url:"/admin/food_type",--}}
+                          {{--method:"GET"--}}
+                      {{--});--}}
+                      {{--break;--}}
+              {{--}--}}
+           {{--});--}}
+        {{--});--}}
+    {{--</script>--}}
     <!-- CRUD LIST CONTENT - crud_list_scripts stack -->
     @stack('crud_list_scripts')
 @endsection

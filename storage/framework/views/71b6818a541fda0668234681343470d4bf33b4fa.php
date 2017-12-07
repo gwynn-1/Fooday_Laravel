@@ -34,8 +34,8 @@
     <link rel="stylesheet" type="text/css" href="css/responsive.css">
     <link rel="stylesheet" type="text/css" href="css/live-settings.css">
     <!-- Google Font-->
-    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700,700i" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Rancho" rel="stylesheet">
+    
+    
     <!-- Script Loading Page-->
     <script src="vendors/html5shiv.js"></script>
     <script src="vendors/respond.min.js"></script>
@@ -69,7 +69,7 @@
                                 </ul>
                             </div>
                             <div class="item">
-                                <div class="wg-social"><a href="checkout.php"><i class="fa fa-shopping-cart fa-2x"></i><span>Shopping Cart</span></a></div>
+                                <div class="wg-social"><a href="/checkout"><i class="fa fa-shopping-cart fa-2x"></i><span>Shopping Cart</span></a></div>
                             </div>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                 <div class="container">
                     <div class="open-offcanvas">&#9776;</div>
 
-                    <div class="header-logo"><a href="index.php" class="logo logo-static"><img src="images/logo-white.png" alt="fooday" class="logo-img"></a><a href="index.html" class="logo logo-fixed"><img src="images/logo.png" alt="fooday" class="logo-img"></a></div>
+                    <div class="header-logo"><a href="/" class="logo logo-static"><img src="images/logo-white.png" alt="fooday" class="logo-img"></a><a href="/" class="logo logo-fixed"><img src="images/logo.png" alt="fooday" class="logo-img"></a></div>
                     <script src="vendors/jquery-1.10.2.min.js"></script>
                     <script>
                         $(function() {
@@ -298,7 +298,7 @@
                     <div class="modal-body">
                         <p>Đặt hàng thành công</p>
                         <p>Đã thêm <span id="tensp"></span> vào giỏ hàng</p>
-                        <a href="checkout.php">Xem giỏ hàng</a>
+                        <a href="/checkout">Xem giỏ hàng</a>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -385,44 +385,43 @@
 
 </script>
 
+<script>
 
+    function ajaxCart(idSP,qty = 1){
+        $.ajax({
+            method:"POST",
+            data:{
+                id : idSP,
+                soluong : qty
+            }
+        }).done(function(data){
+            $("#tensp").html("<b>"+data+"</b>");
+            $("#myModal").modal("show");
+        });
+    }
 
-    
-        
-            
-            
-            
-                
-                
-            
-        
-            
-            
-        
-    
+    $(document).ready(function(){
+        $(".btn-add-to-card").click(function(){
+            var id1= $(this).attr('data-id');
+            ajaxCart(id1);
+        });
 
-    
-        
-            
-            
-        
+        $(".add-to-cart").click(function(){
+            var id_sp = $(this).attr('data-id');
+            var qty = $("#txtQuantity").val().toString();
+            ajaxCart(id_sp,qty);
+        });
 
-        
-            
-            
-            
-        
-
-        
-            
-                
-            
-            
-                
-            
-        
-    
-
+        $("#txtQuantity").on("input",function(){
+            if(parseInt($(this).val()) > 20){
+                $(".add-to-cart").hide(500);
+            }
+            else{
+                $(".add-to-cart").show(500);
+            }
+        });
+    });
+</script>
 </body>
 
 

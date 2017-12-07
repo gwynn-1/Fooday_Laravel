@@ -7,9 +7,16 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\Food_typeRequest as StoreRequest;
 use App\Http\Requests\Food_typeRequest as UpdateRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Box\Spout\Reader;
+use Box\Spout\Writer;
+use Box\Spout\Common\Type;
+use Box\Spout\Writer\Style\StyleBuilder;
 
 class Food_typeCrudController extends CrudController
 {
+
     public function setup()
     {
 
@@ -134,6 +141,86 @@ class Food_typeCrudController extends CrudController
         // $this->crud->orderBy();
         // $this->crud->groupBy();
         // $this->crud->limit();
+    }
+
+    public function ImportExcelAction()
+    {
+        if(isset($_FILES['excelFile']))
+        {
+            $target_file = basename($_FILES["excelFile"]["name"]);
+            $des_file = 'uploads/' . basename($_FILES["excelFile"]["name"]);
+            $excelFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+            $title = ["id",'name','description','image'];
+            if($excelFileType != "xlsx" ) {
+                return redirect()->back()->with("error","Sorry, only XLSX files are allowed.");
+            }
+            else {
+                move_uploaded_file($_FILES["excelFile"]["tmp_name"], $des_file);
+                $this->import_foodtypeDB($des_file,$title);
+            }
+        }
+        return redirect()->back();
+    }
+
+    public function import_foodtypeDB($file_name,$title){
+        $reader = Reader\ReaderFactory::create(Type::XLSX); // for XLSX files
+        //$reader = ReaderFactory::create(Type::CSV); // for CSV files
+        //$reader = ReaderFactory::create(Type::ODS); // for ODS files
+
+        $reader->open($file_name);
+
+        foreach ($reader->getSheetIterator() as $sheet) {
+            foreach ($sheet->getRowIterator() as $key=>$row) {
+                // do stuff with the row
+                if($key==1){
+                    $arr_diff = array_diff($title,$row);
+                    if(count($arr_diff)!=0){
+                        $reader->close();
+                        unlink($file_name);
+                        return redirect()->back()->with("error","Excel file not match pattern");
+                    }
+                }
+                else{
+                    if($row[0]!="" && gettype($row[0])!="integer"){
+                        $reader->close();
+                        unlink($file_name);
+                        return redirect()->back()->with("error","False Value Type");
+                    }
+                    $count_id = DB::table("food_type")->where("id",$row[0])->count();
+                    if($count_id>0){
+                        //Update
+                        DB::table("food_type")->where("id",$row[0])->update([
+                            "name"=>$row[1],
+                            "description"=>$row[2],
+                            "image"=>$row[3]
+                        ]);
+                    }else{
+                        //Insert
+                        DB::table('food_type')->insert([
+                            "id"=>$row[0],
+                            "name"=>$row[1],
+                            "description"=>$row[2],
+                            "image"=>$row[3]
+                        ]);
+                    }
+                }
+            }
+        }
+        $reader->close();
+    }
+
+    public function ExportExcelAction()
+    {
+        $food_type = DB::table("food_type")->get();
+        $table_title = ["id",'name','description','image'];
+        $oExcel =  Writer\WriterFactory::create(Type::XLSX); // for XLSX files
+        $oExcel->openToBrowser("food-type.xlsx");
+
+        $oExcel->addRowWithStyle($table_title,(new StyleBuilder())->setFontBold()->setFontSize(14)->build());
+        foreach ($food_type as $sheet){
+            $oExcel->addRow(get_object_vars($sheet));
+        }
+        $oExcel->close();
     }
 
     public function store(StoreRequest $request)

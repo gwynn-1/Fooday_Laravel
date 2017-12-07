@@ -4,7 +4,6 @@ namespace Backpack\CRUD\app\Http\Controllers;
 
 use Backpack\CRUD\CrudPanel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Form as Form;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -16,6 +15,9 @@ use Backpack\CRUD\app\Http\Controllers\CrudFeatures\SaveActions;
 use Backpack\CRUD\app\Http\Requests\CrudRequest as StoreRequest;
 use Backpack\CRUD\app\Http\Requests\CrudRequest as UpdateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\ShowDetailsRow;
+use Box\Spout\Reader;
+use Box\Spout\Common\Type;
+
 
 class CrudController extends BaseController
 {
@@ -55,21 +57,23 @@ class CrudController extends BaseController
     {
     }
 
+
+
     /**
      * Display all rows in the database for this entity.
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $res)
     {
         $this->crud->hasAccessOrFail('list');
-
         $this->data['crud'] = $this->crud;
         $this->data['title'] = ucfirst($this->crud->entity_name_plural);
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view($this->crud->getListView(), $this->data);
     }
+
 
     /**
      * Show the form for creating inserting a new row.
@@ -232,7 +236,6 @@ class CrudController extends BaseController
     public function destroy($id)
     {
         $this->crud->hasAccessOrFail('delete');
-
         return $this->crud->delete($id);
     }
 }

@@ -1,6 +1,6 @@
 @extends('layout.layout')
 @section('content')
-
+{{--{{dd($arr_cart)}}--}}
 <div class="page-container">
     <div data-bottom-top="background-position: 50% 50px;" data-center="background-position: 50% 0px;" data-top-bottom="background-position: 50% -50px;" class="page-title page-reservation">
         <div class="container">
@@ -14,7 +14,10 @@
     <div class="page-content-wrapper">
         <section class="section-reservation-form padding-top-100 padding-bottom-100">
             <div class="container">
-                <div class="section-content">
+                <div class="section-content cart-container">
+                    @if(!session('success'))
+
+                    @if(count($arr_cart["items"]) !=0)
                     <div class="swin-sc swin-sc-title style-2">
                         <h3 class="title"><span>Chi tiết giỏ hàng</span></h3>
                     </div>
@@ -31,41 +34,26 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                @foreach($arr_cart["items"] as $key=>$cart_item)
+                                <tr id="item-{{$cart_item->id}}">
                                     <td>
-                                        <img src="{{URL::asset("images/product/product-2b.jpg")}}" width="250px">
-                                        <p><br><b>Uncle Herschel's Favorite</b></p>
+                                        <img src="images/hinh_mon_an/{{$cart_item->image}}" width="250px">
+                                        <p><br><b>{{$cart_item->name}}</b></p>
                                     </td>
-                                    <td>$25</td>
+                                    <td>{{$cart_item->price}}</td>
                                     <td>
-                                        <select name="product-qty" id="product-qty" class="form-control" width="50">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
+                                        <select name="product-qty" class="form-control product-qty" width="50" id-row="{{$key}}" id-data="{{$cart_item->id}}">
+                                            @for($i=1;$i<=10;$i++)
+                                            <option value="{{$i}}" @if($i==$cart_item->quantity) selected @endif>{{$i}}</option>
+                                            @endfor
                                         </select>
                                     </td>
-                                    <td>$25</td>
-                                    <td><a href="#" class="remove" title="Remove this item"><i class="fa fa-trash-o fa-2x"></i></a></td>
+                                    <td id="total-price-{{$cart_item->id}}">{{$cart_item->price*$cart_item->quantity}}</td>
+                                    <td><a href="javascript:void(0)" class="remove" id-row="{{$key}}" title="Remove this item"><i class="fa fa-trash-o fa-2x"></i></a></td>
                                 </tr>
+                                @endforeach
                                 <tr>
-                                    <td>
-                                        <img src="{{URL::asset("images/product/product-2b.jpg")}}" width="250px">
-                                        <p><br><b>Uncle Herschel's Favorite</b></p>
-                                    </td>
-                                    <td>$25</td>
-                                    <td>
-                                        <select name="product-qty" id="product-qty" class="form-control" width="50">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                    </td>
-                                    <td>$25</td>
-                                    <td><a href="#" class="remove" title="Remove this item"><i class="fa fa-trash-o fa-2x"></i></a></td>
+                                   <td colspan="5" class="Total-price" style="text-align: right;font-size: 16px;font-weight: bold;">Tổng cộng <span>{{$arr_cart["total"]}}</span></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -76,17 +64,36 @@
                             <div class="swin-sc swin-sc-title style-2">
                                 <h3 class="title"><span>Đặt hàng</span></h3>
                             </div>
-                            <form>
+                            @if($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                    @foreach($errors->all() as $err)
+                                        <li>{{$err}}</li>
+                                    @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            <form action="checkout" method="POST">
+                                {{csrf_field()}}
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                        <input type="text" placeholder="Fullname" class="form-control">
+                                        <input type="text" name="fullname" required placeholder="Fullname" class="form-control">
                                     </div>
+                                </div>
+                                <div class="col-sm-2">Giới tính</div>
+                                <div class="col-sm-10">
+                                    <label> Nam
+                                        <input type="radio" name="gender"  value="nam" checked>
+                                    </label>
+                                    <label> Nữ
+                                        <input type="radio" name="gender" value="nữ">
+                                    </label>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
-                                        <input type="text" placeholder="Email" class="form-control">
+                                        <input type="email" required name="email" placeholder="Email" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -94,7 +101,7 @@
                                         <div class="input-group-addon">
                                             <div class="fa fa-map-marker"></div>
                                         </div>
-                                        <input type="text" placeholder="Address" class="form-control">
+                                        <input required type="text" name="address" placeholder="Address" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -102,19 +109,32 @@
                                         <div class="input-group-addon">
                                             <div class="fa fa-phone"></div>
                                         </div>
-                                        <input type="text" placeholder="Phone" class="form-control">
+                                        <input required type="number" name="phone" placeholder="Phone" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <textarea placeholder="Message" class="form-control"></textarea>
+                                    <textarea name="message" placeholder="Message" class="form-control"></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <div class="swin-btn-wrap center"><a href="#" class="swin-btn center form-submit"> <span>Checkout</span></a></div>
+                                    <div class="swin-btn-wrap center"><button type="submit" class="swin-btn center form-submit"><span>Checkout</span></button></div>
                                 </div>
                             </form>
+
                         </div>
                     </div>
+
+
+                    @else
+                        <h3 class="title" style="text-align:center"><span>Bạn chưa mua sản phẩm nào</span></h3>
+                        {{header("refresh: 10; url=/")}}
+
+                    @endif
+                    @else
+                        <div class="alert alert-success">
+                            <strong>Success!</strong> {{session('success')}}
+                        </div>
+                    @endif
                 </div>
             </div>
         </section>
@@ -161,4 +181,51 @@
         </section>
     </div>
 </div>
+    <script>
+        $(document).ready(function () {
+           $(".product-qty").change(function () {
+               var id = $(this).attr("id-data");
+              $.ajax({
+                  method:"post",
+                  data:{
+                      id:$(this).attr("id-row"),
+                      qty:$(this).val(),
+                      action:"update"
+                  }
+              }).done(function(data){
+                  var totalpricecart = parseInt($(".Total-price span").html());
+                  var totalpriceitem = parseInt($("#total-price-"+id).html());
+                  $(".Total-price span").html(totalpricecart-totalpriceitem);
+                  $("#total-price-"+id).html(data);
+                  totalpricecart = parseInt($(".Total-price span").html());
+                  totalpriceitem = parseInt($("#total-price-"+id).html());
+                  $(".Total-price span").html(totalpricecart+totalpriceitem);
+              });
+           });
+
+           $(".remove").click(function () {
+              var idrow = $(this).attr("id-row");
+              $.ajax({
+                  method:"post",
+                  data:{
+                      id:idrow,
+                      action:"delete"
+                  }
+              }).done(function(data){
+                    var totalpriceitem=parseInt($("#total-price-"+data['id']).html());
+                    var totalpricecart = parseInt($(".Total-price span").html());
+                    $("#item-"+data['id']).remove();
+                    $(".Total-price span").html(totalpricecart-totalpriceitem);
+                    if(data['count']==0){
+                        $(".cart-container").html('<h3 class="title" style="text-align:center"><span>Bạn chưa mua sản phẩm nào</span></h3>');
+                        setTimeout(function(){
+                            window.location.href = "/"
+                        },10000);
+                    }
+              });
+           });
+
+
+        });
+    </script>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class IndexController extends Controller
 {
@@ -27,6 +28,15 @@ class IndexController extends Controller
             $paging = DB::table("foods")->join("pageurl","foods.id_url","=","pageurl.id")->paginate(6);
             return view("index",["foodstoday"=>$foodsToday,"foodpaging"=> $paging]);
         }
+    }
+
+    public function AddtoCart(Request $req){
+        $id = $req->id;
+        $quantity = $req->soluong;
+        $arr = DB::table("foods")->select("name","price")->where("id",$id)->get();
+        Cart::add($id,$arr[0]->name,$quantity,$arr[0]->price);
+//        dd(Cart::content());
+        return $arr[0]->name;
     }
 
 

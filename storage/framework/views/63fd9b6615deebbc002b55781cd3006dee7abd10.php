@@ -22,6 +22,24 @@
                 <div class="box-header <?php echo e($crud->hasAccess('create')?'with-border':''); ?>">
 
                     <?php echo $__env->make('crud::inc.button_stack', ['stack' => 'top'], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                    <a href="<?php echo e(url(config('backpack.base.route_prefix'), 'export-excel')); ?>/<?php echo e($crud->entity_name_plural); ?>" class="btn btn-default ladda-button excel-btn" data-style="zoom-in">
+                        <span class="ladda-label">
+                            Export Excel
+                        </span>
+                    </a>
+
+                    <?php echo Form::open(array('url'=>url(config('backpack.base.route_prefix'), 'import-excel')."/".$crud->entity_name_plural, 'files' => true,'name'=>'form','onchange'=>'document.form.submit();' ,'class'=>'btn btn-default ladda-button excel-btn')); ?>
+
+
+                        <?php echo Form::label("excelFile","Import Excel"); ?>
+
+                        <?php echo Form::file('file', array("name"=>"excelFile")); ?>
+
+                            <?php if(session()->has('error')): ?>
+                                <div style="color: red;font-weight: bold;font-size: 12px"><?php echo e(session('error')); ?></div>
+                            <?php endif; ?>
+                    <?php echo Form::close(); ?>
+
 
                     <div id="datatable_button_stack" class="pull-right text-right"></div>
                 </div>
@@ -334,7 +352,35 @@
 
         });
     </script>
+    
+        
+           
+               
+              
+                  
+                      
+                          
+                          
+                      
 
+                      
+                      
+                  
+                      
+                          
+                          
+                      
+                      
+                  
+                      
+                          
+                          
+                      
+                      
+              
+           
+        
+    
     <!-- CRUD LIST CONTENT - crud_list_scripts stack -->
     <?php echo $__env->yieldPushContent('crud_list_scripts'); ?>
 <?php $__env->stopSection(); ?>

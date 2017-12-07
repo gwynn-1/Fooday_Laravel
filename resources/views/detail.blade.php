@@ -43,9 +43,9 @@
                             <div class="product-quanlity">
                                 <form action="#">
                                     <div class="input-group">
-                                        <input type="text" name="quanlity" placeholder="" value="1" class="form-control"><a href="javascript:void(0)" class="quanlity-plus"><i class="fa fa-plus"></i></a><a href="javascript:void(0)" class="quanlity-minus"><i class="fa fa-minus"></i></a>
+                                        <input type="text" name="quanlity" id="txtQuantity" placeholder="" value="1" class="form-control"><a href="javascript:void(0)" class="quanlity-plus"><i class="fa fa-plus"></i></a><a href="javascript:void(0)" class="quanlity-minus"><i class="fa fa-minus"></i></a>
                                     </div>
-                                    <div class="add-to-cart"><a href="javascript:void(0)" class="swin-btn"> <span>Add To Cart</span></a></div>
+                                    <div class="add-to-cart" data-id="{{$foodDetail->id}}"><a href="javascript:void(0)" class="swin-btn"> <span>Add To Cart</span></a></div>
                                 </form>
                             </div>
 

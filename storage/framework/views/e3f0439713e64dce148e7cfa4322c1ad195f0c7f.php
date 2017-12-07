@@ -23,11 +23,31 @@
           <li><a href="<?php echo e(url(config('backpack.base.route_prefix', 'admin')."/foods")); ?>"><i class="fa fa-dashboard"></i> <span>Foods</span></a></li>
           <li><a href="<?php echo e(url(config('backpack.base.route_prefix', 'admin')."/food_type")); ?>"><i class="fa fa-dashboard"></i> <span>Food Type</span></a></li>
           <li><a href="<?php echo e(url(config('backpack.base.route_prefix', 'admin')."/customer")); ?>"><i class="fa fa-dashboard"></i> <span>Customer</span></a></li>
+          <li><a href="<?php echo e(url(config('backpack.base.route_prefix', 'admin')."/bill")); ?>"><i class="fa fa-dashboard"></i> <span>Bills</span></a></li>
+          <li><a href="<?php echo e(url(config('backpack.base.route_prefix', 'admin')."/bill_detail")); ?>"><i class="fa fa-dashboard"></i> <span>Bill Detail</span></a></li>
+          <li><a href="<?php echo e(url(config('backpack.base.route_prefix', 'admin')."/menu")); ?>"><i class="fa fa-dashboard"></i> <span>Menu</span></a></li>
 
+          <?php if(auth()->check() && auth()->user()->hasRole("Member")): ?>
+          <li><a href="<?php echo e(url(config('backpack.base.route_prefix', 'admin')."/user-read")); ?>"><i class="fa fa-dashboard"></i> <span>User</span></a></li>
+          <?php endif; ?>
+
+          <?php if(auth()->check() && auth()->user()->hasRole("Admin")): ?>
+          <!-- Users, Roles Permissions -->
+          <li class="treeview">
+            <a href="#"><i class="fa fa-group"></i> <span>Users, Roles, Permissions</span> <i class="fa fa-angle-left pull-right"></i></a>
+            <ul class="treeview-menu">
+              <li><a href="<?php echo e(url(config('backpack.base.route_prefix', 'admin') . '/user')); ?>"><i class="fa fa-user"></i> <span>Users</span></a></li>
+              <li><a href="<?php echo e(url(config('backpack.base.route_prefix', 'admin') . '/role')); ?>"><i class="fa fa-group"></i> <span>Roles</span></a></li>
+              <li><a href="<?php echo e(url(config('backpack.base.route_prefix', 'admin') . '/permission')); ?>"><i class="fa fa-key"></i> <span>Permissions</span></a></li>
+            </ul>
+          </li>
+          <?php endif; ?>
           <!-- ======================================= -->
           <li class="header"><?php echo e(trans('backpack::base.user')); ?></li>
           <li><a href="<?php echo e(url(config('backpack.base.route_prefix', 'admin').'/logout')); ?>"><i class="fa fa-sign-out"></i> <span><?php echo e(trans('backpack::base.logout')); ?></span></a></li>
+
         </ul>
+
       </section>
       <!-- /.sidebar -->
     </aside>

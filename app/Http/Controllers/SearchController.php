@@ -10,6 +10,7 @@ class SearchController extends Controller
 {
     //
     public function loadViewAction(Request $res){
+
         if($res->ajax()){
             $data = $_GET["search"];
             $food_result = [];

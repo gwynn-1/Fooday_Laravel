@@ -7,9 +7,16 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\CustomerRequest as StoreRequest;
 use App\Http\Requests\CustomerRequest as UpdateRequest;
+use Illuminate\Http\Request;
+use Box\Spout\Reader;
+use Box\Spout\Writer;
+use Box\Spout\Common\Type;
+use Illuminate\Support\Facades\DB;
+use Box\Spout\Writer\Style\StyleBuilder;
 
 class CustomerCrudController extends CrudController
 {
+
     public function setup()
     {
 
@@ -27,6 +34,8 @@ class CustomerCrudController extends CrudController
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
+
+
 
 //        $this->crud->setFromDb();
         $this->crud->setListView("backpack::crud.list_foods");
@@ -97,7 +106,7 @@ class CustomerCrudController extends CrudController
         // ------ CRUD BUTTONS
         // possible positions: 'beginning' and 'end'; defaults to 'beginning' for the 'line' stack, 'end' for the others;
 //         $this->crud->addButton($stack, $name, $type, $content, $position); // add a button; possible types are: view, model_function
-        // $this->crud->addButtonFromModelFunction($stack, $name, $model_function_name, $position); // add a button whose HTML is returned by a method in the CRUD model
+//         $this->crud->addButtonFromModelFunction("top", "extract_excel", "extractExcel", "end"); // add a button whose HTML is returned by a method in the CRUD model
         // $this->crud->addButtonFromView($stack, $name, $view, $position); // add a button whose HTML is in a view placed at resources\views\vendor\backpack\crud\button
         // $this->crud->removeButtonFromStack($name, $stack);
         // $this->crud->removeAllButtons();
@@ -130,7 +139,7 @@ class CustomerCrudController extends CrudController
         // ------ DATATABLE EXPORT BUTTONS
         // Show export to PDF, CSV, XLS and Print buttons on the table view.
         // Does not work well with AJAX datatables.
-        // $this->crud->enableExportButtons();
+//         $this->crud->enableExportButtons();
 
         // ------ ADVANCED QUERIES
         // $this->crud->addClause('active');
@@ -146,6 +155,94 @@ class CustomerCrudController extends CrudController
         // $this->crud->orderBy();
         // $this->crud->groupBy();
         // $this->crud->limit();
+    }
+
+    public function ExportExcelAction()
+    {
+        $customer = DB::table("customers")->get();
+
+        $table_title = ["id",'name','gender','email','address','phone','note'];
+
+        $oExcel =  Writer\WriterFactory::create(Type::XLSX); // for XLSX files
+        $oExcel->openToBrowser("customer.xlsx");
+
+        $oExcel->addRowWithStyle($table_title,(new StyleBuilder())->setFontBold()->setFontSize(14)->build());
+        foreach ($customer as $sheet){
+            $oExcel->addRow(get_object_vars($sheet));
+        }
+        $oExcel->close();
+    }
+
+    public function ImportExcelAction()
+    {
+        if(isset($_FILES['excelFile']))
+        {
+            $target_file = basename($_FILES["excelFile"]["name"]);
+            $des_file = 'uploads/' . basename($_FILES["excelFile"]["name"]);
+            $excelFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+            $title = ["id",'name','gender','email','address','phone','note'];
+            if($excelFileType != "xlsx" ) {
+                return redirect()->back()->with("error","Sorry, only XLSX files are allowed.");
+            }
+            else {
+                move_uploaded_file($_FILES["excelFile"]["tmp_name"], $des_file);
+                $this->import_CusDB($des_file,$title);
+            }
+        }
+        return redirect()->back();
+    }
+
+    public function import_CusDB($file_name,$title){
+        $reader = Reader\ReaderFactory::create(Type::XLSX); // for XLSX files
+        //$reader = ReaderFactory::create(Type::CSV); // for CSV files
+        //$reader = ReaderFactory::create(Type::ODS); // for ODS files
+
+        $reader->open($file_name);
+
+        foreach ($reader->getSheetIterator() as $sheet) {
+            foreach ($sheet->getRowIterator() as $key=>$row) {
+                // do stuff with the row
+                if($key==1){
+                    $arr_diff = array_diff($title,$row);
+                    if(count($arr_diff)!=0){
+                        $reader->close();
+                        unlink($file_name);
+                        return redirect()->back()->with("error","Excel file not match pattern");
+                    }
+                }
+                elseif($key!=1 && $row[0] != ""){
+                    if( gettype($row[5])!="integer" || gettype($row[0])!="integer"){
+                        $reader->close();
+                        unlink($file_name);
+                        return redirect()->back()->with("error","False Value Type");
+                    }
+                    $count_id = DB::table("customers")->where("id",$row[0])->count();
+                    if($count_id>0){
+                        //Update
+                        DB::table("customers")->where("id",$row[0])->update([
+                            "name"=>$row[1],
+                            "gender"=>$row[2],
+                            "email"=>$row[3],
+                            "address"=>$row[4],
+                            "phone"=>$row[5],
+                            "note"=>$row[6]
+                        ]);
+                    }else{
+                        //Insert
+                        DB::table('customers')->insert([
+                            "id"=>$row[0],
+                            "name"=>$row[1],
+                            "gender"=>$row[2],
+                            "email"=>$row[3],
+                            "address"=>$row[4],
+                            "phone"=>$row[5],
+                            "note"=>$row[6]
+                        ]);
+                    }
+                }
+            }
+        }
+        $reader->close();
     }
 
     public function store(StoreRequest $request)

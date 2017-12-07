@@ -16,7 +16,7 @@ class Customer extends Model
     */
 
     protected $table = 'customers';
-//    protected $primaryKey = 'id';
+    protected $primaryKey = 'id';
     public $timestamps = false;
     // protected $guarded = ['id'];
      protected $fillable = ['name','gender','email','address','phone','note'];
@@ -34,7 +34,9 @@ class Customer extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function Bills(){
+        return $this->hasMany("App\Models\Bills");
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

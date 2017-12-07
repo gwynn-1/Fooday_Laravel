@@ -7,9 +7,16 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\FoodsRequest as StoreRequest;
 use App\Http\Requests\FoodsRequest as UpdateRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Box\Spout\Reader;
+use Box\Spout\Writer;
+use Box\Spout\Common\Type;
+use Box\Spout\Writer\Style\StyleBuilder;
 
 class FoodsCrudController extends CrudController
 {
+
     public function setup()
     {
 
@@ -183,9 +190,9 @@ class FoodsCrudController extends CrudController
                  'label' => "Image", // Table column heading
                  'type' => 'text'],
 
-             ['name' => 'updated_at', // The db column name
+             ['name' => 'update_at', // The db column name
                  'label' => "updated at", // Table column heading
-                 'type' => 'text'],
+                 'type' => 'date'],
 
              ['name' => 'unit', // The db column name
                  'label' => "Unit", // Table column heading
@@ -260,6 +267,103 @@ class FoodsCrudController extends CrudController
         // $this->crud->limit();
 
 
+    }
+    public function ImportExcelAction()
+    {
+        if(isset($_FILES['excelFile']))
+        {
+            $target_file = basename($_FILES["excelFile"]["name"]);
+            $des_file = 'uploads/' . basename($_FILES["excelFile"]["name"]);
+            $excelFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+            $title = ["id",'id_type','name','summary','detail','price','promotion_price','promotion','image','update_at','unit','today','id_url'];
+            if($excelFileType != "xlsx" ) {
+                return redirect()->back()->with("error","Sorry, only XLSX files are allowed.");
+            }
+            else {
+                move_uploaded_file($_FILES["excelFile"]["tmp_name"], $des_file);
+                $this->import_foodDB($des_file,$title);
+            }
+        }
+        return redirect()->back();
+    }
+
+    public function import_foodDB($file_name,$title){
+        $reader = Reader\ReaderFactory::create(Type::XLSX); // for XLSX files
+        //$reader = ReaderFactory::create(Type::CSV); // for CSV files
+        //$reader = ReaderFactory::create(Type::ODS); // for ODS files
+
+        $reader->open($file_name);
+
+        foreach ($reader->getSheetIterator() as $sheet) {
+            foreach ($sheet->getRowIterator() as $key=>$row) {
+                // do stuff with the row
+                if($key==1){
+                    $arr_diff = array_diff($title,$row);
+                    if(count($arr_diff)!=0){
+                        $reader->close();
+                        unlink($file_name);
+                        return redirect()->back()->with("error","Excel file not match pattern");
+                    }
+                }
+                elseif($key!=1 && $row[0] != ""){
+                    if(gettype($row[0])!="integer" || gettype($row[5])!="integer" || gettype($row[6])!="integer" || gettype($row[11])!="integer" || gettype($row[12])!="integer" || gettype($row[1])!="integer"){
+                        $reader->close();
+                        unlink($file_name);
+                        return redirect()->back()->with("error","False Value Type");
+                    }
+                    $count_id = DB::table("foods")->where("id",$row[0])->count();
+                    if($count_id>0){
+                        //Update
+                        DB::table("foods")->where("id",$row[0])->update([
+                            "id_type"=>$row[1],
+                            "name"=>$row[2],
+                            "summary"=>$row[3],
+                            "detail"=>$row[4],
+                            "price"=>$row[5],
+                            "promotion_price"=>$row[6],
+                            "promotion"=>$row[7],
+                            "image"=>$row[8],
+                            "update_at"=>$row[9],
+                            "unit"=>$row[10],
+                            "today"=>$row[11],
+                            "id_url"=>$row[12]
+                        ]);
+                    }else{
+                        //Insert
+                        DB::table('foods')->insert([
+                            "id"=>$row[0],
+                            "id_type"=>$row[1],
+                            "name"=>$row[2],
+                            "summary"=>$row[3],
+                            "detail"=>$row[4],
+                            "price"=>$row[5],
+                            "promotion_price"=>$row[6],
+                            "promotion"=>$row[7],
+                            "image"=>$row[8],
+                            "update_at"=>$row[9],
+                            "unit"=>$row[10],
+                            "today"=>$row[11],
+                            "id_url"=>$row[12]
+                        ]);
+                    }
+                }
+            }
+        }
+        $reader->close();
+    }
+
+    public function ExportExcelAction()
+    {
+        $foods = DB::table("foods")->get();
+        $table_title = ["id",'id_type','name','summary','detail','price','promotion_price','promotion','image','update_at','unit','today','id_url'];
+        $oExcel =  Writer\WriterFactory::create(Type::XLSX); // for XLSX files
+        $oExcel->openToBrowser("foods.xlsx");
+
+        $oExcel->addRowWithStyle($table_title,(new StyleBuilder())->setFontBold()->setFontSize(14)->build());
+        foreach ($foods as $sheet){
+            $oExcel->addRow(get_object_vars($sheet));
+        }
+        $oExcel->close();
     }
 
     public function store(StoreRequest $request)

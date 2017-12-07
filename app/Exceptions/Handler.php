@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -52,5 +53,7 @@ class Handler extends ExceptionHandler
         if($exception->getStatusCode() == 404) {
             return response()->view("ErrorPage.page-404", [], 404);
         }
+
     }
+
 }
